@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Email Marketing - Vivo Accesorios</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vivoBg: '#FAF5EE',
+                        vivoCard: '#FFFFFF',
+                        vivoBorder: '#F0E6D8',
+                        vivoRosePastel: '#F8D7DA',
+                        vivoRoseDark: '#D97A84',
+                        vivoWine: '#5C242C',
+                        vivoWineSoft: '#7A353F',
+                        vivoMuted: '#8A7B79',
+                        vivoBeige: '#F5ECE1',
+                        vivoGold: '#C59B67'
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #FAF5EE;
+            color: #4A3E3D;
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, .font-brand {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D97A84;
+            border-radius: 4px;
+        }
+        /* Style custom range slider */
+        input[type=range] {
+            accent-color: #5C242C;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12 flex flex-col">
+
+    <!-- Header / Branding de Vivo Accesorios -->
+    <header class="bg-vivoBg border-b border-vivoBorder pt-6 pb-5 px-4 text-center">
+        <div class="max-w-5xl mx-auto flex flex-col items-center">
+            <div class="w-10 h-10 mb-2 flex items-center justify-center rounded-full bg-white shadow-xs border border-vivoBorder">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-vivoGold" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 9l10 13 10-13-10-7zM2 9h20M12 22L7 9m10 0l-5 13" />
+                </svg>
+            </div>
+            <p class="text-[10px] tracking-widest text-vivoMuted uppercase font-semibold mb-0.5">Herramienta de Analítica</p>
+            <h1 class="text-2xl md:text-3xl text-vivoWine font-bold tracking-tight mb-0.5">vivo accesorios</h1>
+            <p class="text-xs text-vivoWineSoft italic">Comunidad de intención &bull; Quimbaya, Quindío</p>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 mt-5 flex-grow w-full">
+        
+        <!-- Banner de datos de ejemplo marcados como ficticios -->
+        <div id="example-banner" class="bg-vivoRosePastel/60 border border-vivoRoseDark/30 rounded-xl p-3.5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left shadow-xs">
+            <div class="flex items-center gap-2">
+                <span class="inline-block bg-vivoRoseDark text-white text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">Aviso</span>
+                <p class="text-xs text-vivoWine font-medium">Los valores iniciales mostrados son <strong class="underline">datos de ejemplo ficticios</strong> para fines demostrativos.</p>
+            </div>
+            <button onclick="limpiarCampos()" class="text-xs bg-white border border-vivoRoseDark/40 text-vivoWine px-3 py-1.5 rounded-lg hover:bg-vivoBg transition-colors shadow-xs font-semibold whitespace-nowrap">
+                Limpiar datos de ejemplo
+            </button>
+        </div>
+
+        <!-- Layout Grid No Lineal -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- Columna Izquierda: Entradas (Formulario táctil y directo) -->
+            <section class="lg:col-span-5 space-y-4">
+                
+                <!-- Tarjeta Principal: Denominador (Entregados) -->
+                <div class="bg-vivoWine text-white rounded-2xl p-5 shadow-sm border border-vivoWineSoft">
+                    <div class="flex items-center justify-between mb-2">
+                        <label for="entregados" class="text-xs font-bold uppercase tracking-wider text-vivoRosePastel">
+                            Correos entregados <span class="text-white">*</span>
+                        </label>
+                        <span class="text-[10px] bg-white/15 px-2 py-0.5 rounded text-vivoRosePastel">Base Denominador</span>
+                    </div>
+
+                    <!-- Input con botones + y - para ajuste cómodo desde móvil -->
+                    <div class="flex items-center gap-2 my-2">
+                        <button type="button" onclick="ajustarEntregados(-1000)" class="bg-white/10 hover:bg-white/20 text-white font-bold px-3 py-2 rounded-lg text-sm transition">-1k</button>
+                        <input type="number" id="entregados" value="10000" min="0" oninput="sincronizarSliderEntregados(); calcularMetricas()"
+                            class="w-full bg-white text-vivoWine text-center font-bold text-xl rounded-lg py-2 focus:outline-none focus:ring-2 focus:ring-vivoRosePastel">
+                        <button type="button" onclick="ajustarEntregados(1000)" class="bg-white/10 hover:bg-white/20 text-white font-bold px-3 py-2 rounded-lg text-sm transition">+1k</button>
+                    </div>
+
+                    <!-- Slider de apoyo para cambiar rápido de volumen -->
+                    <input type="range" id="slider-entregados" min="100" max="100000" step="100" value="10000" 
+                        oninput="document.getElementById('entregados').value = this.value; calcularMetricas()" 
+                        class="w-full mt-2 cursor-pointer opacity-80 hover:opacity-100 transition">
+                    
+                    <p class="text-[11px] text-vivoRosePastel/90 mt-1.5 text-center">Deslice o edite el número para recalcular instantáneamente todas las tasas.</p>
+                </div>
+
+                <!-- Bloque Interacciones -->
+                <div class="bg-vivoCard rounded-2xl p-5 shadow-sm border border-vivoBorder space-y-4">
+                    <h2 class="text-base text-vivoWine font-bold border-b border-vivoBorder pb-2">Métricas de Interacción</h2>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-vivoBg/60 p-2.5 rounded-xl border border-vivoBorder">
+                            <label for="clics" class="block text-[11px] font-bold text-vivoWine uppercase tracking-wider mb-1">Clics</label>
+                            <input type="number" id="clics" value="450" min="0" oninput="calcularMetricas()"
+                                class="w-full bg-white border border-vivoBorder rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-vivoRoseDark text-vivoWine font-bold">
+                        </div>
+                        <div class="bg-vivoBg/60 p-2.5 rounded-xl border border-vivoBorder">
+                            <label for="respuestas" class="block text-[11px] font-bold text-vivoWine uppercase tracking-wider mb-1">Respuestas</label>
+                            <input type="number" id="respuestas" value="80" min="0" oninput="calcularMetricas()"
+                                class="w-full bg-white border border-vivoBorder rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-vivoRoseDark text-vivoWine font-bold">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-vivoBg/60 p-2.5 rounded-xl border border-vivoBorder">
+                            <label for="conversiones" class="block text-[11px] font-bold text-vivoWine uppercase tracking-wider mb-1">Conversiones</label>
+                            <input type="number" id="conversiones" value="35" min="0" oninput="calcularMetricas()"
+                                class="w-full bg-white border border-vivoBorder rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-vivoRoseDark text-vivoWine font-bold">
+                        </div>
+                        <div class="bg-vivoBg/60 p-2.5 rounded-xl border border-vivoBorder">
+                            <label for="bajas" class="block text-[11px] font-bold text-vivoWine uppercase tracking-wider mb-1">Bajas (Unsub)</label>
+                            <input type="number" id="bajas" value="15" min="0" oninput="calcularMetricas()"
+                                class="w-full bg-white border border-vivoBorder rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-vivoRoseDark text-vivoWine font-bold">
+                        </div>
+                    </div>
+
+                    <div class="bg-vivoBg/60 p-2.5 rounded-xl border border-vivoBorder">
+                        <label for="spam" class="block text-[11px] font-bold text-vivoWine uppercase tracking-wider mb-1">Reportes de Spam</label>
+                        <input type="number" id="spam" value="2" min="0" oninput="calcularMetricas()"
+                            class="w-full bg-white border border-vivoBorder rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-vivoRoseDark text-vivoWine font-bold">
+                    </div>
+                </div>
+
+                <!-- Bloque Financiero COP -->
+                <div class="bg-vivoCard rounded-2xl p-5 shadow-sm border border-vivoBorder space-y-3">
+                    <h3 class="text-xs font-bold text-vivoWine uppercase tracking-wider border-b border-vivoBorder pb-2">Variables Financieras (COP)</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label for="inversion" class="block text-[11px] font-semibold text-vivoWineSoft mb-1">Inversión ($ COP)</label>
+                            <input type="number" id="inversion" value="250000" min="0" oninput="calcularMetricas()"
+                                class="w-full bg-vivoBg border border-vivoBorder rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-vivoRoseDark text-vivoWine font-semibold">
+                        </div>
+
+                        <div>
+                            <label for="ingresoPorConversion" class="block text-[11px] font-semibold text-vivoWineSoft mb-1">Ingreso p/ Conv. ($ COP)</label>
+                            <input type="number" id="ingresoPorConversion" value="85000" min="0" oninput="calcularMetricas()"
+                                class="w-full bg-vivoBg border border-vivoBorder rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-vivoRoseDark text-vivoWine font-semibold">
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Columna Derecha: Resultados Dashboard No Lineal (Tarjetas en Cuadrícula) -->
+            <section class="lg:col-span-7 space-y-4">
+                
+                <!-- Alerta Denominador Faltante -->
+                <div id="alerta-denominador" class="hidden bg-amber-50 border border-amber-200 text-amber-900 rounded-2xl p-4 text-xs font-medium shadow-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                        <strong>Denominador requerido:</strong> Ingrese un valor mayor a cero en "Correos entregados" para poder calcular las tasas.
+                    </div>
+                </div>
+
+                <!-- Hero ROI Card -->
+                <div class="bg-gradient-to-br from-vivoBeige to-white border border-vivoBorder rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div>
+                        <span class="text-[10px] font-bold text-vivoGold uppercase tracking-widest block">Desempeño Económico</span>
+                        <h3 class="text-lg font-bold text-vivoWine">Retorno de la Inversión (ROI)</h3>
+                        <p class="text-[11px] text-vivoMuted mt-0.5">Fórmula: ((Ingresos Totales - Inversión) / Inversión) &times; 100</p>
+                    </div>
+                    <div class="text-center sm:text-right bg-white px-5 py-3 rounded-xl border border-vivoBorder/80 shadow-2xs w-full sm:w-auto">
+                        <span id="val-roi" class="text-3xl font-extrabold text-vivoWine block">0%</span>
+                        <span id="val-ingresos" class="text-[11px] text-vivoWineSoft font-semibold block mt-0.5">Ingresos: $0 COP</span>
+                    </div>
+                </div>
+
+                <!-- Grid No Lineal de Resultados (2 columnas en móviles grandes / tablets) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    
+                    <!-- Tarjeta: Tasa de Clics -->
+                    <div class="bg-vivoCard border border-vivoBorder rounded-2xl p-4 shadow-2xs flex flex-col justify-between hover:border-vivoRoseDark/40 transition">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="text-xs font-bold text-vivoWine uppercase tracking-wider">Tasa de Clics (CTR)</h4>
+                                <div id="semaforo-clics" class="w-3 h-3 rounded-full bg-gray-300"></div>
+                            </div>
+                            <div class="flex items-baseline justify-between my-2">
+                                <span id="val-clics" class="text-2xl font-bold text-vivoWine">0%</span>
+                                <div class="flex items-center gap-1">
+                                    <span class="text-[10px] text-vivoMuted">Meta:</span>
+                                    <input type="number" id="meta-clics" value="3.0" step="0.1" min="0" oninput="calcularMetricas()" 
+                                        class="w-12 bg-vivoBg border border-vivoBorder rounded px-1 text-xs text-center font-bold text-vivoWine focus:outline-none">
+                                    <span class="text-[10px] text-vivoMuted">%</span>
+                                </div>
+                            </div>
+                            <!-- Barra de Progreso Dinámica -->
+                            <div class="w-full bg-vivoBg rounded-full h-1.5 mb-3 overflow-hidden">
+                                <div id="bar-clics" class="bg-vivoRoseDark h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-vivoMuted border-t border-vivoBorder/60 pt-2">Fórmula: (Clics / Entregados) &times; 100</p>
+                    </div>
+
+                    <!-- Tarjeta: Tasa de Respuesta -->
+                    <div class="bg-vivoCard border border-vivoBorder rounded-2xl p-4 shadow-2xs flex flex-col justify-between hover:border-vivoRoseDark/40 transition">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="text-xs font-bold text-vivoWine uppercase tracking-wider">Tasa de Respuesta</h4>
+                                <div id="semaforo-respuestas" class="w-3 h-3 rounded-full bg-gray-300"></div>
+                            </div>
+                            <div class="flex items-baseline justify-between my-2">
+                                <span id="val-respuestas" class="text-2xl font-bold text-vivoWine">0%</span>
+                                <div class="flex items-center gap-1">
+                                    <span class="text-[10px] text-vivoMuted">Meta:</span>
+                                    <input type="number" id="meta-respuestas" value="0.5" step="0.1" min="0" oninput="calcularMetricas()" 
+                                        class="w-12 bg-vivoBg border border-vivoBorder rounded px-1 text-xs text-center font-bold text-vivoWine focus:outline-none">
+                                    <span class="text-[10px] text-vivoMuted">%</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-vivoBg rounded-full h-1.5 mb-3 overflow-hidden">
+                                <div id="bar-respuestas" class="bg-vivoRoseDark h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-vivoMuted border-t border-vivoBorder/60 pt-2">Fórmula: (Respuestas / Entregados) &times; 100</p>
+                    </div>
+
+                    <!-- Tarjeta: Tasa de Conversión -->
+                    <div class="bg-vivoCard border border-vivoBorder rounded-2xl p-4 shadow-2xs flex flex-col justify-between hover:border-vivoRoseDark/40 transition sm:col-span-2 md:col-span-1">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="text-xs font-bold text-vivoWine uppercase tracking-wider">Tasa de Conversión</h4>
+                                <div id="semaforo-conversiones" class="w-3 h-3 rounded-full bg-gray-300"></div>
+                            </div>
+                            <div class="flex items-baseline justify-between my-2">
+                                <span id="val-conversiones" class="text-2xl font-bold text-vivoWine">0%</span>
+                                <div class="flex items-center gap-1">
+                                    <span class="text-[10px] text-vivoMuted">Meta:</span>
+                                    <input type="number" id="meta-conversiones" value="0.2" step="0.1" min="0" oninput="calcularMetricas()" 
+                                        class="w-12 bg-vivoBg border border-vivoBorder rounded px-1 text-xs text-center font-bold text-vivoWine focus:outline-none">
+                                    <span class="text-[10px] text-vivoMuted">%</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-vivoBg rounded-full h-1.5 mb-3 overflow-hidden">
+                                <div id="bar-conversiones" class="bg-vivoRoseDark h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-vivoMuted border-t border-vivoBorder/60 pt-2">Fórmula: (Conversiones / Entregados) &times; 100</p>
+                    </div>
+
+                    <!-- Tarjeta: Tasa de Bajas -->
+                    <div class="bg-vivoCard border border-vivoBorder rounded-2xl p-4 shadow-2xs flex flex-col justify-between hover:border-vivoRoseDark/40 transition">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="text-xs font-bold text-vivoWine uppercase tracking-wider">Tasa de Bajas</h4>
+                                <div id="semaforo-bajas" class="w-3 h-3 rounded-full bg-gray-300"></div>
+                            </div>
+                            <div class="flex items-baseline justify-between my-2">
+                                <span id="val-bajas" class="text-2xl font-bold text-vivoWine">0%</span>
+                                <div class="flex items-center gap-1">
+                                    <span class="text-[10px] text-vivoMuted">Máx:</span>
+                                    <input type="number" id="meta-bajas" value="0.2" step="0.05" min="0" oninput="calcularMetricas()" 
+                                        class="w-12 bg-vivoBg border border-vivoBorder rounded px-1 text-xs text-center font-bold text-vivoWine focus:outline-none">
+                                    <span class="text-[10px] text-vivoMuted">%</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-vivoBg rounded-full h-1.5 mb-3 overflow-hidden">
+                                <div id="bar-bajas" class="bg-vivoWineSoft h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-vivoMuted border-t border-vivoBorder/60 pt-2">Fórmula: (Bajas / Entregados) &times; 100</p>
+                    </div>
+
+                    <!-- Tarjeta: Tasa de Spam -->
+                    <div class="bg-vivoCard border border-vivoBorder rounded-2xl p-4 shadow-2xs flex flex-col justify-between hover:border-vivoRoseDark/40 transition sm:col-span-2">
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <h4 class="text-xs font-bold text-vivoWine uppercase tracking-wider">Tasa de Spam</h4>
+                                <div id="semaforo-spam" class="w-3 h-3 rounded-full bg-gray-300"></div>
+                            </div>
+                            <div class="flex items-baseline justify-between my-2">
+                                <span id="val-spam" class="text-2xl font-bold text-vivoWine">0%</span>
+                                <div class="flex items-center gap-1">
+                                    <span class="text-[10px] text-vivoMuted">Máx:</span>
+                                    <input type="number" id="meta-spam" value="0.05" step="0.01" min="0" oninput="calcularMetricas()" 
+                                        class="w-12 bg-vivoBg border border-vivoBorder rounded px-1 text-xs text-center font-bold text-vivoWine focus:outline-none">
+                                    <span class="text-[10px] text-vivoMuted">%</span>
+                                </div>
+                            </div>
+                            <div class="w-full bg-vivoBg rounded-full h-1.5 mb-3 overflow-hidden">
+                                <div id="bar-spam" class="bg-vivoWineSoft h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-vivoMuted border-t border-vivoBorder/60 pt-2">Fórmula: (Reportes Spam / Entregados) &times; 100</p>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <footer class="mt-8 text-center text-xs text-vivoMuted border-t border-vivoBorder pt-4">
+            <p class="font-medium">vivo accesorios &bull; Herramienta interna de análisis de comunicaciones</p>
+            <p class="mt-1 text-[11px]">Diseñado para evaluación de desempeño en envíos a la comunidad de intención</p>
+        </footer>
+    </main>
+
+    <script>
+        // Formateador de moneda en Pesos Colombianos (COP)
+        const formatCOP = new Intl.NumberFormat('es-CO', {
+            style: 'currency',
+            currency: 'COP',
+            maximumFractionDigits: 0
+        });
+
+        function obtenerNumero(id) {
+            const val = parseFloat(document.getElementById(id).value);
+            return isNaN(val) ? 0 : val;
+        }
+
+        function ajustarEntregados(delta) {
+            const el = document.getElementById('entregados');
+            let actual = obtenerNumero('entregados');
+            actual = Math.max(0, actual + delta);
+            el.value = actual;
+            sincronizarSliderEntregados();
+            calcularMetricas();
+        }
+
+        function sincronizarSliderEntregados() {
+            const val = obtenerNumero('entregados');
+            const slider = document.getElementById('slider-entregados');
+            if (val <= slider.max) {
+                slider.value = val;
+            }
+        }
+
+        function actualizarSemaforoYBarra(metricKey, valor, meta, esRiesgo = false) {
+            const semaforoEl = document.getElementById('semaforo-' + metricKey);
+            const barEl = document.getElementById('bar-' + metricKey);
+            
+            semaforoEl.className = "w-3 h-3 rounded-full transition-all duration-300 ";
+
+            // Cálculo visual del ancho de la barra
+            let porcentajeBarra = 0;
+            if (meta > 0) {
+                porcentajeBarra = Math.min(100, (valor / meta) * 100);
+            }
+            if (barEl) {
+                barEl.style.width = `${porcentajeBarra}%`;
+            }
+
+            if (esRiesgo) {
+                // Para métricas negativas (Bajas, Spam): Menor o igual a la meta es Verde
+                if (valor <= meta) {
+                    semaforoEl.classList.add("bg-emerald-500");
+                } else if (valor <= meta * 1.5) {
+                    semaforoEl.classList.add("bg-amber-400");
+                } else {
+                    semaforoEl.classList.add("bg-rose-500");
+                }
+            } else {
+                // Para métricas positivas (Clics, Respuestas, Conversiones): Mayor o igual a la meta es Verde
+                if (valor >= meta) {
+                    semaforoEl.classList.add("bg-emerald-500");
+                } else if (valor >= meta * 0.7) {
+                    semaforoEl.classList.add("bg-amber-400");
+                } else {
+                    semaforoEl.classList.add("bg-rose-500");
+                }
+            }
+        }
+
+        function calcularMetricas() {
+            const entregados = obtenerNumero('entregados');
+            const clics = obtenerNumero('clics');
+            const respuestas = obtenerNumero('respuestas');
+            const conversiones = obtenerNumero('conversiones');
+            const bajas = obtenerNumero('bajas');
+            const spam = obtenerNumero('spam');
+            const inversion = obtenerNumero('inversion');
+            const ingresoPorConversion = obtenerNumero('ingresoPorConversion');
+
+            const alertaDenominador = document.getElementById('alerta-denominador');
+
+            // Control de división por cero y advertencia
+            if (entregados <= 0) {
+                alertaDenominador.classList.remove('hidden');
+                
+                ['clics', 'respuestas', 'conversiones', 'bajas', 'spam'].forEach(metric => {
+                    document.getElementById('val-' + metric).innerText = "N/A";
+                    document.getElementById('semaforo-' + metric).className = "w-3 h-3 rounded-full bg-gray-300";
+                    const bar = document.getElementById('bar-' + metric);
+                    if (bar) bar.style.width = '0%';
+                });
+            } else {
+                alertaDenominador.classList.add('hidden');
+
+                // Cálculo de Tasas (todas divididas sobre entregados)
+                const tasaClics = (clics / entregados) * 100;
+                const tasaRespuestas = (respuestas / entregados) * 100;
+                const tasaConversiones = (conversiones / entregados) * 100;
+                const tasaBajas = (bajas / entregados) * 100;
+                const tasaSpam = (spam / entregados) * 100;
+
+                // Presentar los resultados calculados dinámicamente
+                document.getElementById('val-clics').innerText = tasaClics.toFixed(2) + '%';
+                document.getElementById('val-respuestas').innerText = tasaRespuestas.toFixed(2) + '%';
+                document.getElementById('val-conversiones').innerText = tasaConversiones.toFixed(2) + '%';
+                document.getElementById('val-bajas').innerText = tasaBajas.toFixed(2) + '%';
+                document.getElementById('val-spam').innerText = tasaSpam.toFixed(2) + '%';
+
+                // Evaluar Semáforos y Barras según la meta introducida
+                actualizarSemaforoYBarra('clics', tasaClics, obtenerNumero('meta-clics'), false);
+                actualizarSemaforoYBarra('respuestas', tasaRespuestas, obtenerNumero('meta-respuestas'), false);
+                actualizarSemaforoYBarra('conversiones', tasaConversiones, obtenerNumero('meta-conversiones'), false);
+                actualizarSemaforoYBarra('bajas', tasaBajas, obtenerNumero('meta-bajas'), true);
+                actualizarSemaforoYBarra('spam', tasaSpam, obtenerNumero('meta-spam'), true);
+            }
+
+            // Cálculo del ROI Financiero
+            const ingresosTotales = conversiones * ingresoPorConversion;
+            document.getElementById('val-ingresos').innerText = `Ingresos: ${formatCOP.format(ingresosTotales)}`;
+
+            const elemRoi = document.getElementById('val-roi');
+            if (inversion <= 0) {
+                if (ingresosTotales > 0) {
+                    elemRoi.innerText = "Infinito";
+                    elemRoi.className = "text-3xl font-extrabold text-emerald-600 block";
+                } else {
+                    elemRoi.innerText = "0%";
+                    elemRoi.className = "text-3xl font-extrabold text-vivoWine block";
+                }
+            } else {
+                const roi = ((ingresosTotales - inversion) / inversion) * 100;
+                elemRoi.innerText = roi.toFixed(1) + '%';
+                if (roi > 0) {
+                    elemRoi.className = "text-3xl font-extrabold text-emerald-600 block";
+                } else if (roi === 0) {
+                    elemRoi.className = "text-3xl font-extrabold text-vivoWine block";
+                } else {
+                    elemRoi.className = "text-3xl font-extrabold text-rose-600 block";
+                }
+            }
+        }
+
+        function limpiarCampos() {
+            document.getElementById('entregados').value = '';
+            document.getElementById('clics').value = '';
+            document.getElementById('respuestas').value = '';
+            document.getElementById('conversiones').value = '';
+            document.getElementById('bajas').value = '';
+            document.getElementById('spam').value = '';
+            document.getElementById('inversion').value = '';
+            document.getElementById('ingresoPorConversion').value = '';
+            document.getElementById('slider-entregados').value = 0;
+
+            const banner = document.getElementById('example-banner');
+            if (banner) banner.style.display = 'none';
+
+            calcularMetricas();
+        }
+
+        window.onload = function() {
+            calcularMetricas();
+        };
+    </script>
+</body>
+</html>
